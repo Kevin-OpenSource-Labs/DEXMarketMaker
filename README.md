@@ -1,36 +1,27 @@
-## OKChain Java SDK
+## DEXMarketMaker
 
-The OKChain Java SDK is a lightweight Java library to interact with OKChain. 
+The DEXMarketMaker is a extensible open source market maker bot for okex dex based on okchain-java-sdk. 
 
 ### 1.Components
 
-- src - the functions which could be invoked to interact with OKChain are contained in class `OKChainRPCClientImpl` of package `com.okchain.client.impl`. 
-- test - it seems like a set of examples to show how to use the functions mentioned above. The developers could design their code refering to the test functions of class `OKChainRPCClientImplTest` in package `com.okchain.client` in detail.
+#### a. Account management component
 
-There are some function modules in path `src` as well :
+The component is responsible for creating account and getting account info, etc.
 
-- common - network communications by RPC；
+#### b. Fair value component
 
-- crypto - related with the account info and address info of OKChain；
-- encoding - the implementation of go-amino in Java;
-- proto - the base of amino with protobuf3;
-- transaction - how to build an available transaction for OKChain;
-- types -  all the message types used in Java SDK;
+The component is responsible for getting lasteast information and calculating fair value and market state
+
+#### c. Quote component
+
+The component is responsible for managing buy and sell pending orders on market based on fair value and quote strategy. If the market state is abnormal, it should cancel all pending orders
+
+#### d. Risk control component
+
+The component is responsible for risk control, include but not limited to hedge exposure, pnl monitoring, etc.
 
 ### 2.Installation
 
 ```
-git clone https://github.com/okex/okchain-java-sdk.git
+git clone https://github.com/Kevin-OpenSource-Labs/DEXMarketMaker.git
 ```
-
-### 3.API
-
-Find it on the [sdk documents](https://okchain-docs.readthedocs.io/zh_CN/latest/api/sdk/java-sdk.html)
-
-### 4.Tesing
-
-All changes and addition of codes will be pushed with unit tests strictly. Right now you can find existing test cases : github.com/okex/okchain-java-sdk/src/test
-
-### 5.Contributing
-
-No doubt that it's admirable to make contributions to OKChain Java SDK. You can provide your code as long as you have tested it with a local client and your unit test showed its validity.  
