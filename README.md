@@ -1,12 +1,12 @@
 ## DEXMarketMaker
 
-The DEXMarketMaker is a extensible open source market maker bot for okex dex based on okchain-java-sdk. 
+The DEXMarketMaker is a extensible open source market maker bot for okex dex based on okchain-java-sdk
 
 ### 1.Components
 
 #### a. Account management component
 
-The component is responsible for creating account and getting account info, etc.
+The component is responsible for creating account and getting account info, etc
 
 #### b. Fair value component
 
@@ -18,7 +18,7 @@ The component is responsible for managing buy and sell pending orders on market 
 
 #### d. Risk control component
 
-The component is responsible for risk control, include but not limited to hedge exposure, pnl monitoring, etc.
+The component is responsible for risk control, include but not limited to hedge exposure, pnl monitoring, etc
 
 ### 2.Installation
 
