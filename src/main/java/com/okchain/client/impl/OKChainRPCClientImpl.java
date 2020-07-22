@@ -22,7 +22,6 @@ import com.okchain.types.staking.Description;
 import org.bouncycastle.util.encoders.Base64;
 import org.bouncycastle.util.encoders.Hex;
 import org.jetbrains.annotations.NotNull;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 
 import java.io.File;
