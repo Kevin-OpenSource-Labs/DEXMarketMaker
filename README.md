@@ -10,7 +10,7 @@ The component is responsible for creating account and getting account info, etc.
 
 #### b. Fair value component
 
-The component is responsible for getting lasteast information and calculating fair value and market state
+The component is responsible for getting latest information and calculating fair value / market state
 
 #### c. Quote component
 
