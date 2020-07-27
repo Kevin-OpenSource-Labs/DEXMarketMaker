@@ -1,10 +1,13 @@
 package com.marketmaker.fairvalue;
 
 import java.util.Date;
+
+import com.marketmaker.exchange.ExchangeBase;
 import com.marketmaker.exchange.ExchangeBinance;
 import com.marketmaker.exchange.ExchangeMock;
 import com.marketmaker.exchange.ExchangeOKEX;
 import com.marketmaker.main.DexMarketMaker;
+import com.marketmaker.quote.QuoteMgr;
 
 public class MarketDataMgr {
 	
@@ -20,13 +23,20 @@ public class MarketDataMgr {
 		{
 			try 			
 			{
+				ExchangeBase exchange = m_dexMarketMaker.getExchange();
+				QuoteMgr quoteMgr = m_dexMarketMaker.getQuoteMgr();
+				Object quoteEventObj = quoteMgr.getQuoteEventObject();
 				//mock trade
-				if(m_dexMarketMaker.getExchange() instanceof ExchangeMock)
-				{
-					MyMarketData.FairValue = 1000 + 10 * Math.random();
+				if(exchange instanceof ExchangeMock)
+				{					
+					exchange.updateMarketData(MyMarketData);			
+					MyMarketData.FairValue = MyMarketData.DepthData.Mid + 10 * Math.random();
 					MyMarketData.IsNormal = true;
-					MyMarketData.DepthData.UpdateTime = new Date();	
-					m_dexMarketMaker.getQuoteThread().notify();
+					MyMarketData.DepthData.UpdateTime = new Date();					
+					synchronized(quoteEventObj)
+					{
+						quoteEventObj.notify();		
+					}
 				}
 				//real trade
 				else
@@ -48,12 +58,11 @@ public class MarketDataMgr {
 						{
 							MyMarketData.IsNormal = true;								
 						}
-						
-						//update time
 						MyMarketData.DepthData.UpdateTime = new Date();
-						
-						//Notify Quote thread
-						m_dexMarketMaker.getQuoteThread().notify();
+						synchronized(quoteEventObj)
+						{							
+							quoteEventObj.notify();	
+						}						
 					}
 				}
 				Thread.sleep(50);

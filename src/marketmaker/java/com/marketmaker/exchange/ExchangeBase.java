@@ -6,8 +6,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.SocketException;
 import java.net.URL;
+import java.util.ArrayList;
 
-import com.marketmaker.account.StockAccount;
+import com.marketmaker.types.StockAccount;
 import com.marketmaker.fairvalue.MarketData;
 import com.marketmaker.main.DexMarketMaker;
 import com.marketmaker.types.Order;
@@ -20,6 +21,7 @@ public abstract class ExchangeBase {
 	public abstract boolean PlaceOrder(Order order);	
 	public abstract void CancelOrder(Order order);	
 	public abstract void UpdateOrder(Order order);	
+	public abstract void CancelOrders(ArrayList<Order> orders);
 	
 	public static String httpGet(String httpUrl)
 	{

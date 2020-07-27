@@ -15,6 +15,7 @@ public class Order {
 	public double TradedPrice;
 	public OrderState State;
 	public boolean IsFinished;
+	public String Message;
 	
 	@Override
     public String toString() {
@@ -28,6 +29,7 @@ public class Order {
             .append("TradedPrice", TradedPrice)
             .append("OrderState", State)
             .append("IsFinished", IsFinished)
+            .append("Message", Message)
             .toString();
     }
 }

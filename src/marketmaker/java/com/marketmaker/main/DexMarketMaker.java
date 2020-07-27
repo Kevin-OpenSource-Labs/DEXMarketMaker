@@ -4,7 +4,9 @@ import com.marketmaker.exchange.ExchangeBase;
 import com.marketmaker.exchange.ExchangeMock;
 import com.marketmaker.fairvalue.MarketDataMgr;
 import com.marketmaker.quote.QuoteMgr;
+import com.marketmaker.quote.QuoteParameter;
 import com.marketmaker.riskcontrol.AutoHedgeMgr;
+import com.marketmaker.types.StockAccount;
 
 public class DexMarketMaker {
 	
@@ -45,7 +47,15 @@ public class DexMarketMaker {
 	{
 		return m_exchange;		
 	}
-	public Thread getQuoteThread()
+	public StockAccount getAccount()
+	{
+		return m_account;
+	}
+	public QuoteParameter getQuoteParameter()
+	{
+		return m_quoteParameter;		
+	}
+    public Thread getQuoteThread()
 	{
 		return m_quoteThread;
 	}
@@ -57,9 +67,26 @@ public class DexMarketMaker {
 	public void Start(ExchangeBase exchange, String symbol)
 	{	
 		m_exchange = exchange;
+		m_account = new StockAccount();
 		m_marketDataMgr = new MarketDataMgr();
 		m_quoteMgr = new QuoteMgr();	
 		m_hedgeMgr = new AutoHedgeMgr();
+		
+		m_quoteParameter = new QuoteParameter();
+		m_quoteParameter.QuoteVolume = 1;
+		m_quoteParameter.QuoteVolumeRatioThreshold = 0.01;
+		m_quoteParameter.QuotePriceSpreadRatio = 0.01;
+		m_quoteParameter.QuotePriceRatioThreshold = 0.005;
+		m_quoteParameter.AutoHedgeVolumeThreshold = 1;		
+		
+		//quote logic
+		m_quoteThread = new Thread(new Runnable() 
+		{
+			@Override
+			public void run() {
+			m_quoteMgr.Start();
+		}});
+		m_quoteThread.start();
 				
 		//Update fair value logic
 		m_marketDataThread = new Thread(new Runnable() 
@@ -70,14 +97,7 @@ public class DexMarketMaker {
 		}});
 		m_marketDataThread.start();
 		
-		//quote logic
-		m_quoteThread = new Thread(new Runnable() 
-		{
-			@Override
-			public void run() {
-				m_quoteMgr.Start();
-		}});
-		m_quoteThread.start();
+				
 		//Hedge logic
 		m_hedgeThread = new Thread(new Runnable() 
 		{
@@ -85,7 +105,7 @@ public class DexMarketMaker {
 			public void run() {
 				m_hedgeMgr.Start();
 		}});
-		m_hedgeThread.start();			
+		m_hedgeThread.start();
 	}	
 	private static DexMarketMaker m_inst = null;
 	private static Object m_lockObj = new Object();	
@@ -93,8 +113,10 @@ public class DexMarketMaker {
 	private MarketDataMgr m_marketDataMgr = null;	
 	private QuoteMgr m_quoteMgr = null;
 	private AutoHedgeMgr m_hedgeMgr = null;	
+	private StockAccount m_account = null;
 	private Thread m_marketDataThread = null;
 	private Thread m_quoteThread = null;
-	private Thread m_hedgeThread = null;	
+	private Thread m_hedgeThread = null;
+	private QuoteParameter m_quoteParameter = null;
 	private boolean m_stop = false;
 }

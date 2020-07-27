@@ -1,9 +1,11 @@
 package com.marketmaker.exchange;
 
+import java.util.ArrayList;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.marketmaker.account.StockAccount;
+import com.marketmaker.types.StockAccount;
 import com.marketmaker.fairvalue.MarketData;
 import com.marketmaker.fairvalue.MarketDepthData;
 import com.marketmaker.types.Order;
@@ -66,6 +68,12 @@ public class ExchangeOKEX extends ExchangeBase {
 
 	@Override
 	public void UpdateOrder(Order order) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void CancelOrders(ArrayList<Order> orders) {
 		// TODO Auto-generated method stub
 		
 	}
