@@ -72,7 +72,8 @@ public class MarketDataMgr {
 				e.printStackTrace();
 		    }			
 		}
-	}	 
+	}
+	
 	
 	private DexMarketMaker m_dexMarketMaker = null;
 }

@@ -6,7 +6,17 @@ public class StockAccount {
 	
     public HashMap<String, StockPosition> StockPositionMap = new HashMap<String, StockPosition>();
 	
-	public void AdjustStockVolume(String symbol, double volume)
+    public double getExpose(String symbol)
+    {
+    	double exposeVolume = 0;
+    	if(StockPositionMap.containsKey(symbol))
+    	{
+    		StockPosition position = StockPositionMap.get(symbol);
+    		return position.TotalVolume - position.BaseVolume;	
+    	}
+    	return exposeVolume;
+    }
+	public void adjustStockVolume(String symbol, double volume)
 	{
 		if(!StockPositionMap.containsKey(symbol))
 		{

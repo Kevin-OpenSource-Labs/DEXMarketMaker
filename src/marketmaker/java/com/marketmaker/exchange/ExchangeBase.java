@@ -9,8 +9,11 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import com.marketmaker.types.StockAccount;
+import com.marketmaker.types.TradeDirection;
+import com.marketmaker.types.TradeRecord;
 import com.marketmaker.fairvalue.MarketData;
 import com.marketmaker.main.DexMarketMaker;
+import com.marketmaker.quote.QuoteMgr;
 import com.marketmaker.types.Order;
 
 public abstract class ExchangeBase {
@@ -53,7 +56,29 @@ public abstract class ExchangeBase {
             e.printStackTrace();
         }
         return result;		
+	}
+	
+	protected void NotifyTrade(TradeRecord record)
+	{		
+		//update account symbol volume
+		if(record.Direction == TradeDirection.Buy)
+		{
+			m_account.adjustStockVolume(record.Symbol, record.TradedVolume);		
+		}
+		else
+		{
+			m_account.adjustStockVolume(record.Symbol, -record.TradedVolume);
+		}
+		
+		//notify quote manager to adjust pending orders if necessary
+		Object quoteEventObj = m_quoteMgr.getQuoteEventObject();
+		synchronized(quoteEventObj)
+		{							
+			quoteEventObj.notify();	
+		}				
 	}	
 	
 	protected DexMarketMaker m_dexMarketMaker = DexMarketMaker.getInstance();
+	protected StockAccount m_account = m_dexMarketMaker.getAccount();
+	protected QuoteMgr m_quoteMgr = m_dexMarketMaker.getQuoteMgr();
 }
